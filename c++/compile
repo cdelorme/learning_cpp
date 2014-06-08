@@ -1,0 +1,64 @@
+#!/bin/bash
+
+FILE=$1
+
+if [ -z "$FILE" ]
+then
+
+    ##
+    # compile all
+    ##
+
+    # build all cpp to o
+    for FILE in *.cpp
+    do
+        g++ -c $FILE
+    done
+
+    # compile to executable
+    for FILE in *.o
+    do
+        g++ -o ${FILE%%.*} $FILE
+        rm -rf $FILE
+    done
+
+elif [ "$FILE" = "clean" ]
+then
+
+    echo $0
+    echo "Cleaning files"
+    for FILE in ./*
+    do
+        if [ -x $FILE ] && [ "${FILE}" != "$0" ]
+        then
+            # remove executable files
+            rm -rf $FILE
+        fi
+    done
+
+else
+
+    ##
+    # compile the specified file
+    ##
+
+    if ! [ -f "$FILE.cpp" ]
+    then
+        echo "file not found"
+        exit 1
+    fi
+
+    # build
+    g++ -c "${FILE}.cpp"
+
+    # compile
+    g++ -o $FILE "${FILE}.o"
+
+    # cleanup
+    rm -rf "${FILE}.o"
+
+    # run
+    ./$FILE
+
+fi
+
