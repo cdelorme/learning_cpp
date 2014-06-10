@@ -14,8 +14,13 @@ int main() {
     names.insert("Casey DeLorme");
     names.insert("Jamie Smith");
 
-    // these are like an array, except they allow the data type as the key
-    cout << names["Casey DeLorme"] << endl;
+    // turns out you cannot access sets like this, either I lied or encountered a wierd clang bug
+    //cout << names["Casey DeLorme"] << endl;
+
+    // this is the other approach:
+    for (auto i = names.begin(); i != names.end(); i++) {
+        cout << *i << endl;
+    }
 
     // this is useful if you need an array of items that you lookup by themseves
     // for example if every instance of an object should be unique you can find an instance in a set

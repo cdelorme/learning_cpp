@@ -1,6 +1,13 @@
 #!/bin/bash
 
-FILE=$1
+# grab argument, minus extension (useful for compiling)
+FILE=${1%%.*}
+
+# set flags for compiling
+CC="g++"
+OPTFLAGS="-Og"
+#CPPFLAGS="-std=c++11 -framework SFML"
+CPPFLAGS="-std=c++11 -framework SFML -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system"
 
 if [ -z "$FILE" ]
 then
@@ -12,13 +19,13 @@ then
     # build all cpp to o
     for FILE in *.cpp
     do
-        g++-4.8 -Og -c $FILE
+        $CC $CPPFLAGS $OPTFLAGS -c $FILE
     done
 
     # compile to executable
     for FILE in *.o
     do
-        g++-4.8 -Og -framework SFML -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system -o ${FILE%%.*} $FILE
+        $CC $CPPFLAGS $OPTFLAGS -o ${FILE%%.*} $FILE
         rm -rf $FILE
     done
 
@@ -42,6 +49,7 @@ else
     # compile the specified file
     ##
 
+    # make sure it exists
     if ! [ -f "$FILE.cpp" ]
     then
         echo "file not found"
@@ -49,10 +57,10 @@ else
     fi
 
     # build
-    g++-4.8 -Og -c "${FILE}.cpp"
+    $CC $CPPFLAGS $OPTFLAGS -c "${FILE}.cpp"
 
     # compile
-    g++-4.8 -Og -framework SFML -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system -o $FILE "${FILE}.o"
+    $CC $CPPFLAGS $OPTFLAGS -o $FILE "${FILE}.o"
 
     # cleanup
     rm -rf "${FILE}.o"
