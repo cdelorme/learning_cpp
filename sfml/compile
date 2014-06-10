@@ -36,7 +36,7 @@ then
     echo "Cleaning files"
     for FILE in ./*
     do
-        if [ -x $FILE ] && [ "${FILE}" != "$0" ]
+        if [ -x $FILE ] && [ "${FILE}" != "$0" ] && ! [ -d $FILE ]
         then
             # remove executable files
             rm -rf $FILE
