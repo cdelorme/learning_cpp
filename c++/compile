@@ -1,9 +1,10 @@
 #!/bin/bash
 
-FILE=$1
+FILE=${1%%.*}
 CC="g++"
 OPTFLAGS="-Og"
 BUILDFLAGS="-std=c++11"
+COMPILEFLAGS=""
 
 if [ -z "$FILE" ]
 then
@@ -21,7 +22,7 @@ then
     # compile to executable
     for FILE in *.o
     do
-        $CC $OPTFLAGS -o ${FILE%%.*} $FILE
+        $CC $COMPILEFLAGS $OPTFLAGS -o ${FILE%%.*} $FILE
         rm -rf $FILE
     done
 
@@ -55,7 +56,7 @@ else
     $CC $BUILDFLAGS $OPTFLAGS -c "${FILE}.cpp"
 
     # compile
-    $CC $OPTFLAGS -o $FILE "${FILE}.o"
+    $CC $COMPILEFLAGS $OPTFLAGS -o $FILE "${FILE}.o"
 
     # cleanup
     rm -rf "${FILE}.o"
