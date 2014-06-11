@@ -17,11 +17,11 @@ int main() {
 
     sf::Texture pT;
     sf::Sprite pS;
-    pT.loadFromFile("data/sprites/image.png");
+    pT.loadFromFile("../data/sprites/player1.png");
     pS.setTexture(pT);
 
     sf::Texture bgT;
-    bgT.loadFromFile("data/levels/bg.jpg");
+    bgT.loadFromFile("../data/levels/1.jpg");
     sf::Sprite bg;
     bg.setTexture(bgT);
     bg.setScale(1.0f, (float)screenDimensions.y / bgT.getSize().y);

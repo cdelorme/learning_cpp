@@ -18,12 +18,12 @@ int main() {
 
     sf::Texture pT;
     sf::Sprite pS;
-    pT.loadFromFile("data/sprites/image.png");
+    pT.loadFromFile("../data/sprites/player1.png");
     pS.setTexture(pT);
 
     // load a background image
     sf::Texture bgT;
-    bgT.loadFromFile("data/levels/bg.jpg");
+    bgT.loadFromFile("../data/levels/1.jpg");
 
     // create a sprite for the bg
     sf::Sprite bg;

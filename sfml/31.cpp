@@ -22,7 +22,7 @@ int main() {
 
     // both players will use the same texture
     sf::Texture playerTexture;
-    playerTexture.loadFromFile("data/sprites/image.png");
+    playerTexture.loadFromFile("../data/sprites/player1.png");
 
     // create two player sprites
     sf::Sprite playerOne;
@@ -45,7 +45,7 @@ int main() {
 
     // create background image
     sf::Texture background;
-    background.loadFromFile("data/levels/bg.jpg");
+    background.loadFromFile("../data/levels/1.jpg");
     sf::Sprite backgroundSprite;
     backgroundSprite.setTexture(background);
     backgroundSprite.setScale(1.0f, (float) screenDimensions.y / background.getSize().y);

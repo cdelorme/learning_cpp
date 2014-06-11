@@ -19,7 +19,7 @@ int main() {
     sf::Sprite pS;
 
     //pT.loadFromFile("data/sprites/image.png", sf::IntRect(32, 0, 32, 32)); // yes we should have this in an if statement, but meh
-    pT.loadFromFile("data/sprites/image.png");
+    pT.loadFromFile("../data/sprites/player1.png");
     pS.setTexture(pT);
 
     while (w.isOpen()) {

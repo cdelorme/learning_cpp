@@ -14,7 +14,7 @@ int main() {
     // for this we'll create a texture
     sf::Texture pT;
     sf::Sprite pS;
-    if (!pT.loadFromFile("data/sprites/image.png")) {
+    if (!pT.loadFromFile("../data/sprites/player1.png")) {
         std::cout << "Failed to load player image" << std::endl;
     }
 

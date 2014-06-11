@@ -21,8 +21,10 @@ int main() {
     bool paused = false;
 
     // both players will use the same texture
-    sf::Texture playerTexture;
-    playerTexture.loadFromFile("data/sprites/image.png");
+    sf::Texture playerOneTexture;
+    playerOneTexture.loadFromFile("../data/sprites/player1.png");
+    sf::Texture playerTwoTexture;
+    playerTwoTexture.loadFromFile("../data/sprites/player2.png");
 
     // create two player sprites
     sf::Sprite playerOne;
@@ -36,8 +38,8 @@ int main() {
     sf::Vector2i playerTwoDirection(1, Down);
 
     // set texture on each sprite
-    playerOne.setTexture(playerTexture);
-    playerTwo.setTexture(playerTexture);
+    playerOne.setTexture(playerOneTexture);
+    playerTwo.setTexture(playerTwoTexture);
 
     // set initial player sprites
     playerOne.setTextureRect(sf::IntRect(playerOneDirection.x * 32, playerOneDirection.y * 32, 32, 32));
@@ -45,7 +47,7 @@ int main() {
 
     // create background image
     sf::Texture background;
-    background.loadFromFile("data/levels/bg.jpg");
+    background.loadFromFile("../data/levels/1.jpg");
     sf::Sprite backgroundSprite;
     backgroundSprite.setTexture(background);
     backgroundSprite.setScale(1.0f, (float) screenDimensions.y / background.getSize().y);
@@ -130,7 +132,7 @@ int main() {
             // handle playerOne animation changes
             if (animateOne) {
                 playerOneDirection.x++;
-                if (playerOneDirection.x * 32 >= playerTexture.getSize().x) {
+                if (playerOneDirection.x * 32 >= playerOneTexture.getSize().x) {
                     playerOneDirection.x = 0;
                 }
                 animateOne = false;
@@ -139,7 +141,7 @@ int main() {
             // handle playerTwo animation changes
             if (animateTwo) {
                 playerTwoDirection.x++;
-                if (playerTwoDirection.x * 32 >= playerTexture.getSize().x) {
+                if (playerTwoDirection.x * 32 >= playerTwoTexture.getSize().x) {
                     playerTwoDirection.x = 0;
                 }
                 animateTwo = false;

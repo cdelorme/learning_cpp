@@ -23,7 +23,7 @@ int main() {
 
     sf::Texture pT;
     sf::Sprite pS;
-    pT.loadFromFile("data/sprites/image.png");
+    pT.loadFromFile("../data/sprites/player1.png");
     pS.setTexture(pT);
 
     // prepare for random later

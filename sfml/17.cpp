@@ -12,7 +12,7 @@ int main() {
     sf::Sprite pS;
 
     // when we load in the sprite we can also specify a portion of the image to use
-    pT.loadFromFile("data/sprites/image.png", sf::IntRect(32, 0, 32, 32)); // yes we should have this in an if statement, but meh
+    pT.loadFromFile("../data/sprites/player1.png", sf::IntRect(32, 0, 32, 32)); // yes we should have this in an if statement, but meh
     pS.setTexture(pT);
 
     while (w.isOpen()) {

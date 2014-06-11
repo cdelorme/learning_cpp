@@ -17,13 +17,13 @@ int main() {
 
     sf::Texture pT;
     sf::Sprite pS;
-    pT.loadFromFile("data/sprites/image.png");
+    pT.loadFromFile("../data/sprites/player1.png");
     pS.setTexture(pT);
 
     // let's draw text
     // for this to work we need a font file
     sf::Font fnt;
-    fnt.loadFromFile("data/fonts/ForMateKonaVe.ttf");// we can wrap this in an if/then to test that it loads
+    fnt.loadFromFile("../data/fonts/ForMateKonaVe.ttf");// we can wrap this in an if/then to test that it loads
     sf::String words = " ";
     sf::Text sT(words, fnt, 40);
 
