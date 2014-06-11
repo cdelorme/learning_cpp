@@ -3,10 +3,8 @@
 FILE=${1%%.*}
 CC="g++"
 OPTFLAGS="-Og"
-BUILDFLAGS="-std=c++11"
-COMPILEFLAGS=""
-#CPPFLAGS="-std=c++11 -framework SFML"
-#CPPFLAGS="-std=c++11 -framework SFML -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system"
+BUILDFLAGS="-std=c++11 -I../SFML-2.1/include"
+COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system"
 
 if [ -z "$FILE" ]
 then
