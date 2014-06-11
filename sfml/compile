@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# grab argument, minus extension (useful for compiling)
 FILE=${1%%.*}
-
-# set flags for compiling
 CC="g++"
 OPTFLAGS="-Og"
+BUILDFLAGS="-std=c++11"
+COMPILEFLAGS=""
 #CPPFLAGS="-std=c++11 -framework SFML"
-CPPFLAGS="-std=c++11 -framework SFML -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system"
+#CPPFLAGS="-std=c++11 -framework SFML -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system"
 
 if [ -z "$FILE" ]
 then
@@ -19,13 +18,13 @@ then
     # build all cpp to o
     for FILE in *.cpp
     do
-        $CC $CPPFLAGS $OPTFLAGS -c $FILE
+        $CC $BUILDFLAGS $OPTFLAGS -c $FILE
     done
 
     # compile to executable
     for FILE in *.o
     do
-        $CC $CPPFLAGS $OPTFLAGS -o ${FILE%%.*} $FILE
+        $CC $COMPILEFLAGS $OPTFLAGS -o ${FILE%%.*} $FILE
         rm -rf $FILE
     done
 
@@ -57,10 +56,10 @@ else
     fi
 
     # build
-    $CC $CPPFLAGS $OPTFLAGS -c "${FILE}.cpp"
+    $CC $BUILDFLAGS $OPTFLAGS -c "${FILE}.cpp"
 
     # compile
-    $CC $CPPFLAGS $OPTFLAGS -o $FILE "${FILE}.o"
+    $CC $COMPILEFLAGS $OPTFLAGS -o $FILE "${FILE}.o"
 
     # cleanup
     rm -rf "${FILE}.o"
