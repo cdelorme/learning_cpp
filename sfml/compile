@@ -3,8 +3,12 @@
 FILE=${1%%.*}
 CC="g++"
 OPTFLAGS="-Og"
-BUILDFLAGS="-std=c++11 -I../SFML-2.1/include"
+BUILDFLAGS="-std=c++11"
 COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system"
+# Temporarily disabled until I can figure out static linking
+#BUILDFLAGS="-std=c++11 -I../SFML-2.1/include"
+#COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system"
+
 
 if [ -z "$FILE" ]
 then
