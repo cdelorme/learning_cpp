@@ -1,76 +1,89 @@
 #!/bin/bash
-
 # Create a custom app
 
-appname=Game
+# accept app name via command line
+appfile=$1
+
+# uppercase first character for app name
+appname=$(echo $appfile | head -c 1 | tr [a-z] [A-Z]; echo $appfile | cut -c 2-)
+
 appfolder=$appname.app
 macosfolder=$appfolder/Contents/MacOS
 plistfile=$appfolder/Contents/Info.plist
-appfile=game
+PkgInfoContents=$appname
 
-PkgInfoContents="APPLMAG#"
+# optional folders
+frameworks="lib/"
+data="data/"
 
-# not yet finished rewriting
-# but this is a general overview of how to
-# put together a `.app` on mac
-
-#
-if ! [ -e $appfile ]
+# if no executable then exit
+if ! [ -x $appfile ]
 then
-  echo "$appfile does not exist"
-elif [ -e $appfolder ]
-then
-  echo "$appfolder already exists"
-else
-  echo "Creating $appfolder..."
-  mkdir $appfolder
-  mkdir $appfolder/Contents
-  mkdir $appfolder/Contents/MacOS
-  mkdir $appfolder/Contents/Resources
-
-#
-# For a debug bundle,
-# Instead of copying executable into .app folder after each compile,
-# simply create a symbolic link to executable.
-#
-if [ $command = 1 ]; then
-  ln -s ../../../$appname $macosfolder/$appname
-else
-  cp $appname $macosfolder/$appname
+    echo "no appfile found"
+    exit 1
 fi
 
-# Copy the resource files to the correct place
-  cp *.bmp $appfolder/Contents/Resources
-  cp icon3.ico $appfolder/Contents/Resources
-  cp icon3.png $appfolder/Contents/Resources
-  cp macicon.icns $appfolder/Contents/Resources
-  cp docs/*.* $appfolder/Contents/Resources
-#
-# Create PkgInfo file.
+# build directories with recursive parent construction
+mkdir -p $macosfolder
+mkdir -p $appfolder/Contents/Resources
+mkdir -p $appfolder/Contents/Frameworks
+
+# For debugging you can set the app as a symlink to the executable
+if [ $1 = "debug" ]
+then
+    ln -s "../../../${appname}" "${macosfolder}/${appname}"
+else
+    # mv instead of cp is an option as well
+    cp "$appname" "$macosfolder/$appname"
+fi
+
+# copy frameworks
+if [ -d "${frameworks}" ]
+then
+    cp -R "${frameworks}" "${appfolder}/"
+fi
+
+# copy data
+if [ -d "${data}" ]
+then
+    cp -R "${data}" "${appfolder}/Contents/Resources/"
+fi
+
+# copy docs
+if [ -d "docs/" ]
+then
+    cp -R "docs/" "${appfolder}/Contents/Resources/"
+fi
+
+# copy icon if named as appfile and png
+if [ -f "${appfile}.png" ]
+then
+    cp -R "${appfile}.png" "${appfolder}/Contents/Resources/"
+fi
+
+# Create PkgInfo file
   echo $PkgInfoContents >$appfolder/Contents/PkgInfo
-#
-# Create information property list file (Info.plist).
-  echo '<?xml version="1.0" encoding="UTF-8"?>' >$plistfile
-  echo '<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >>$plistfile
-  echo '<plist version="1.0">' >>$plistfile
-  echo '<dict>' >>$plistfile
-  echo '  <key>CFBundleDevelopmentRegion</key>' >>$plistfile
-  echo '  <string>English</string>' >>$plistfile
-  echo '  <key>CFBundleExecutable</key>' >>$plistfile
-  echo '  <string>'$appname'</string>' >>$plistfile
-  echo '  <key>CFBundleIconFile</key>' >>$plistfile
-  echo '  <string>macicon.icns</string>' >>$plistfile
-  echo '  <key>CFBundleIdentifier</key>' >>$plistfile
-  echo '  <string>org.magnifier.magnifier</string>' >>$plistfile
-  echo '  <key>CFBundleInfoDictionaryVersion</key>' >>$plistfile
-  echo '  <string>6.0</string>' >>$plistfile
-  echo '  <key>CFBundlePackageType</key>' >>$plistfile
-  echo '  <string>APPL</string>' >>$plistfile
-  echo '  <key>CFBundleSignature</key>' >>$plistfile
-  echo '  <string>MAG#</string>' >>$plistfile
-  echo '  <key>CFBundleVersion</key>' >>$plistfile
-  echo '  <string>1.0</string>' >>$plistfile
-  echo '</dict>' >>$plistfile
-  echo '</plist>' >>$plistfile
-fi
 
+# Create Info.plist
+echo '<?xml version="1.0" encoding="UTF-8"?>' >$plistfile
+echo '<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >>$plistfile
+echo '<plist version="1.0">' >>$plistfile
+echo '<dict>' >>$plistfile
+echo '  <key>CFBundleDevelopmentRegion</key>' >>$plistfile
+echo '  <string>English</string>' >>$plistfile
+echo '  <key>CFBundleExecutable</key>' >>$plistfile
+echo '  <string>'$appname'</string>' >>$plistfile
+echo '  <key>CFBundleIconFile</key>' >>$plistfile
+echo '  <string>macicon.icns</string>' >>$plistfile
+echo '  <key>CFBundleIdentifier</key>' >>$plistfile
+echo '  <string>org.magnifier.magnifier</string>' >>$plistfile
+echo '  <key>CFBundleInfoDictionaryVersion</key>' >>$plistfile
+echo '  <string>6.0</string>' >>$plistfile
+echo '  <key>CFBundlePackageType</key>' >>$plistfile
+echo '  <string>APPL</string>' >>$plistfile
+echo '  <key>CFBundleSignature</key>' >>$plistfile
+echo '  <string>MAG#</string>' >>$plistfile
+echo '  <key>CFBundleVersion</key>' >>$plistfile
+echo '  <string>1.0</string>' >>$plistfile
+echo '</dict>' >>$plistfile
+echo '</plist>' >>$plistfile
