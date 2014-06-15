@@ -1,0 +1,85 @@
+#!/bin/bash
+
+FILE=${1%%.*}
+CC="g++"
+OPTFLAGS="-Og"
+BUILDFLAGS="-std=c++11"
+COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio"
+# Temporarily disabled until I can figure out static linking
+#BUILDFLAGS="-std=c++11 -I../SFML-2.1/include"
+#COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system"
+
+
+if [ -z "$FILE" ]
+then
+
+    ##
+    # compile all
+    ##
+
+    # build all cpp to o
+    for FILE in *.cpp
+    do
+        $CC $BUILDFLAGS $OPTFLAGS -c $FILE
+    done
+
+    # compile to executable
+    for FILE in *.o
+    do
+        $CC $COMPILEFLAGS $OPTFLAGS -o ${FILE%%.*} $FILE
+        rm -rf $FILE
+    done
+
+elif [ "$FILE" = "clean" ]
+then
+
+    echo $0
+    echo "Cleaning files"
+
+    # remove all output files
+    for FILE in ./*.o
+    do
+        rm -rf $FILE
+    done
+
+    # remove all executables
+    for FILE in ./*
+    do
+        if [ -x $FILE ] && [ "${FILE}" != "$0" ] && ! [ -d $FILE ]
+        then
+            # remove executable files
+            rm -rf $FILE
+        fi
+    done
+
+else
+
+    ##
+    # compile the specified file
+    ##
+
+    # eliminate previously built instance
+    rm -rf $FILE
+    rm -rf $FILE.o
+
+    # make sure cpp exists
+    if ! [ -f "$FILE.cpp" ]
+    then
+        echo "file not found"
+        exit 1
+    fi
+
+    # build, compile, and run
+    $CC $BUILDFLAGS $OPTFLAGS -c "${FILE}.cpp"
+
+    # compile
+    $CC $COMPILEFLAGS $OPTFLAGS -o $FILE "${FILE}.o"
+
+    # cleanup
+    rm -rf "${FILE}.o"
+
+    # run
+    ./$FILE
+
+fi
+
