@@ -35,6 +35,14 @@ then
 
     echo $0
     echo "Cleaning files"
+
+    # remove all output files
+    for FILE in ./*.o
+    do
+        rm -rf $FILE
+    done
+
+    # remove all executables
     for FILE in ./*
     do
         if [ -x $FILE ] && [ "${FILE}" != "$0" ] && ! [ -d $FILE ]
