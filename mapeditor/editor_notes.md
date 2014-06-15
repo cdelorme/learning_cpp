@@ -1,62 +1,87 @@
 
-We need a few things:
+# editor notes
 
-Tile Editor - For editing Tiles
-Map Editor - For editing Maps (which use Tiles)
+We need a few editors:
 
-We need to have support for reading and writing both binary and text.  Some kind of optional debug mode to save or read data as text vs binary, allowing us to quickly convert all the text to compatible binary files and reverse, for testing.
+- Tile Editor
+- Map Editor
+- Entity Editor
+- Audio Editor
 
-We can add the binary flag to in (or out) in our fstream:
+Individual tiles are defined in the tile editor, and then placed onto a map using the map editor.
+
+The entity editor is for player and enemy sprites, though I may end up making them part of the tile editor.
+
+The audio editor isn't even a thought-in-progress as of yet, but the idea would be to match audio tracks with a readable name, which may help if we don't want to organize them in the file system sensibly.
+
+
+## editor formats
+
+For swift debugging we should support both text and binary file formats.  An optional checkbox for debug mode to change read and write operations to use raw text instead of binary.
+
+The `fstream` flags are like so:
 
     ios::in | ios::binary
 
 
+## maps
 
-Some major questions:
+Maps should have:
 
-- How do we describe tiles?
-- How do we describe maps?
+- Tiles
+- One or more background images /w parallax support
+- an optional musical track
 
-**This will have a heavy influence on the games collision detection.**
+Another question is whether we have a bunch of separated maps with entrances (and possibly loading screens), or if we want to load one entire map of the whole game up front.  Is it possible to handle the entire game map all at once?  How would we handle transitions is another good question.
 
-Some standard collision tests include:
+Also, do we expect all map tiles to be the same size?  This would add to the complexity in every way if we allowed multiple block sizes.
 
-- Bounding Box
-- Distance
-- Pixel
-
-Bounding box is great for simplicity, but it's hardly accurate, especially if the boxes that make up your graphics are very detailed.  They are simple enough to check for which makes them performant, and a wonderful pick for things like RPG's or strategy games that don't need a high degree of collision accuracy.  It doesn't give you the power to do things like slope collisions, and that can greatly limit even a 2D platformer.
-
-Distance collision uses more line based math with a radius instead of a box.  It's another option if you have rounder elements to define.
-
-Pixel perfect collision eats your CPU up and is not ideal in almost any case.  However it is the most accurate collision detection.  In the CodingMadeEasy example he converted all of his sprites to images, and mapped the pixels for comparison, identifying any pixels with alpha > 0.  The approach used combines the bounding-box check with pixel-perfect comparison.  The good news is that makes it pretty easy to implement only on some elements.  It can identify bounding box collisions, and limit comparison to the overlapping sections.
+Do we also want to slow down the players movement when climbing a slope, and increase it when descending a slope?
 
 
-- [Good read](http://www.gamedev.net/page/resources/_/technical/game-programming/the-guide-to-implementing-2d-platformers-r2936)
-- [more good reads](http://www.metanetsoftware.com/technique/tutorialA.html)
-- [again](http://www.metanetsoftware.com/technique/tutorialB.html)
+## animation
+
+Entities certainly have animation loops, but it is also possible that every on-screen tile may also have an animation loop.  This is going further and further towards tiles being entities, and vice-versa.
 
 
+## tiles
 
-Obviously a tile would have a size, the name of the image in which it exists, and its coordinates on that image (can be 0,0 or for multi-image sprite mapping could be diff).
+Tiles have many types of player interaction which can make them a bit complex:
 
-However, going beyond this it may also have additional bits to represent certain types of data.  For example, is it solid or air, does it maybe have a slope or inner curve?  Does it have spikes that maybe do damage?  Or perhaps it is lava, or water?  Is it single-directional such that you can jump up but won't fall back through (and will your game allow crouched jump to go back down)?
-
-This is where simple bounding box collision detection may not be enough to make all of this work, and some creativity has to be included.
-
-
-
----
-
-
-What about maps?
-
-Obviously a map consists of a bunch of tiles.  However, in addition to the tiles, a map may also have additional bits for important things, like which spots enemies will spawn, and maybe doors that lead to other areas.
-
-Another good question is where the platformer I build will be treated as one giant map and simply change which tiles are loaded as the player moves around?  Or will it be loading screens between areas type travel?
-
-How do we handle the transision so the user knows if there is no loading screens?
+- Background (could be air, or theme objects)
+- Solid (can't walk or fall through)
+- Foreground (same as background, but drawn in front of the user)
+- Breakable (can be destroyed with an attack)
+- Moveable (think puzzle game blocks)
+- Moving (elevators)
+- One-Way (Jump up through, optionally down, but won't fall automatically)
+- Damage (Spikes, Lava, Water in a game withotu swimming)
 
 
-Another good question is whether we want to slow or speed the character movement while climbing or descending a slope?
+Known tile attributes:
+
+- dimensions (width, height)
+- `position_in_image` (top, left)
+- image_name
+    - texture (for buffering)
+    - sprite (for rendering, uses position and dimensions for parts)
+
+_Animation support adds to complexity._
+
+
+## collision detection
+
+Here are some options:
+
+- Bounding Box (Traditional, high performance poor accuracy with rounded edges)
+- Distance (OK Performance, much better for round objects accuracy)
+- Pixel Perfect (low performace, 100% accurate)
+- Multi-Bounding Box (Combines multiple bounding boxes per entity making it higher performance but also more accurate)
+
+I still have a lot of research to do, especially on how to handle slopes.
+
+
+Detailed or oddly shaped character sprites make it much harder to cleanly handle collisions.  The bounding box method becomes unfair in the eyes of the player.
+
+However, we want to pick a balance of high performance and high accuracy if possible.
 
