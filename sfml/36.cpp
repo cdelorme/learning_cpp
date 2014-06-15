@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 int main() {
     sf::Vector2i screenDimensions(800, 600);
@@ -13,6 +14,21 @@ int main() {
 
     // create a game clock
     sf::Clock c;
+
+    // create a sound buffer & sound object
+    sf::SoundBuffer soundBuffer;
+    sf::Sound sound;
+
+    // mp3 format is not supported and must be converted
+    // ogg is preferred for music due to support and compression
+
+    soundBuffer.loadFromFile("../data/sounds/1.aiff");
+    sound.setBuffer(soundBuffer);
+
+    // now let's open from file a music!
+    sf::Music backgroundMusic;
+    backgroundMusic.openFromFile("../data/music/2.ogg");
+    backgroundMusic.play();
 
     // define movement speeds
     float frameCounter = 1, switchFrame = 100, frameSpeed = 500, movementSpeed = 200;
@@ -151,10 +167,7 @@ int main() {
             playerOneView.zoom(0.99f);
             playerTwoView.zoom(0.99f);
         }
-
-
-        // rotation is the same method, values are forwards or backwards
-        // radians can be used as well with slightly different arg parameter signature
+        // rotation effects
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
             playerOneView.rotate(0.1f);
             playerTwoView.rotate(0.1f);
@@ -162,6 +175,28 @@ int main() {
             playerOneView.rotate(-0.1f);
             playerTwoView.rotate(-0.1f);
         }
+
+        // play sound with "p"
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
+            sound.play();
+
+            // we can also pause or stop
+            // sound.stop()
+            // sound.pause()
+            // we can also change the pitch
+            // sound.setPitch(0.5f);// float difference
+            // finally, we can adjust the volume
+            // sound.setVolume(50);//0-100
+            //
+            //
+            // it also appears we can do many more things like
+            // setLoop(true);//boolean
+        }
+
+        // notable concerns, it plays rediculously fast
+        // to prevent this we need an audio abstraction
+        // to use the game clock to stop it from happening so damn fast
+
 
         // getting it back to perfect centering is really difficult
         // ideally you should track the original or "normal" view
