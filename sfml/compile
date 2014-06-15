@@ -58,7 +58,11 @@ else
     # compile the specified file
     ##
 
-    # make sure it exists
+    # eliminate previously built instance
+    rm -rf $FILE
+    rm -rf $FILE.o
+
+    # make sure cpp exists
     if ! [ -f "$FILE.cpp" ]
     then
         echo "file not found"
