@@ -60,14 +60,11 @@ else
     # build
     $CC $BUILDFLAGS $OPTFLAGS -c "${FILE}.cpp"
 
-    # compile
-    $CC $COMPILEFLAGS $OPTFLAGS -o $FILE "${FILE}.o"
+    # compile & run if successful
+    $CC $COMPILEFLAGS $OPTFLAGS -o $FILE "${FILE}.o" && ./$FILE
 
     # cleanup
     rm -rf "${FILE}.o"
-
-    # run
-    ./$FILE
 
 fi
 
