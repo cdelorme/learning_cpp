@@ -58,10 +58,16 @@ else
     fi
 
     # build, compile, and run
-    $CC $BUILDFLAGS $OPTFLAGS -c "${FILE}.cpp" && $CC $COMPILEFLAGS $OPTFLAGS -o $FILE "${FILE}.o" && ./$FILE
+    $CC $BUILDFLAGS $OPTFLAGS -c "${FILE}.cpp"
+
+    # compile
+    $CC $COMPILEFLAGS $OPTFLAGS -o $FILE "${FILE}.o"
 
     # cleanup
     rm -rf "${FILE}.o"
+
+    # run
+    ./$FILE
 
 fi
 
