@@ -57,11 +57,8 @@ else
         exit 1
     fi
 
-    # build
-    $CC $BUILDFLAGS $OPTFLAGS -c "${FILE}.cpp"
-
-    # compile & run if successful
-    $CC $COMPILEFLAGS $OPTFLAGS -o $FILE "${FILE}.o" && ./$FILE
+    # build, compile, and run
+    $CC $BUILDFLAGS $OPTFLAGS -c "${FILE}.cpp" && $CC $COMPILEFLAGS $OPTFLAGS -o $FILE "${FILE}.o" && ./$FILE
 
     # cleanup
     rm -rf "${FILE}.o"
