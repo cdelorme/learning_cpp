@@ -10,7 +10,7 @@ appname=$(echo $appfile | head -c 1 | tr [a-z] [A-Z]; echo $appfile | cut -c 2-)
 appfolder=$appname.app
 macosfolder=$appfolder/Contents/MacOS
 plistfile=$appfolder/Contents/Info.plist
-PkgInfoContents=$appname
+PkgInfoContents="$appname#"
 
 # optional folders
 frameworks="lib/"
@@ -68,22 +68,22 @@ fi
 echo '<?xml version="1.0" encoding="UTF-8"?>' >$plistfile
 echo '<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >>$plistfile
 echo '<plist version="1.0">' >>$plistfile
-echo '<dict>' >>$plistfile
-echo '  <key>CFBundleDevelopmentRegion</key>' >>$plistfile
-echo '  <string>English</string>' >>$plistfile
-echo '  <key>CFBundleExecutable</key>' >>$plistfile
-echo '  <string>'$appname'</string>' >>$plistfile
-echo '  <key>CFBundleIconFile</key>' >>$plistfile
-echo '  <string>macicon.icns</string>' >>$plistfile
-echo '  <key>CFBundleIdentifier</key>' >>$plistfile
-echo '  <string>org.magnifier.magnifier</string>' >>$plistfile
-echo '  <key>CFBundleInfoDictionaryVersion</key>' >>$plistfile
-echo '  <string>6.0</string>' >>$plistfile
-echo '  <key>CFBundlePackageType</key>' >>$plistfile
-echo '  <string>APPL</string>' >>$plistfile
-echo '  <key>CFBundleSignature</key>' >>$plistfile
-echo '  <string>MAG#</string>' >>$plistfile
-echo '  <key>CFBundleVersion</key>' >>$plistfile
-echo '  <string>1.0</string>' >>$plistfile
-echo '</dict>' >>$plistfile
+echo '    <dict>' >>$plistfile
+echo '        <key>CFBundleDevelopmentRegion</key>' >>$plistfile
+echo '        <string>English</string>' >>$plistfile
+echo '        <key>CFBundleExecutable</key>' >>$plistfile
+echo '        <string>'$appname'</string>' >>$plistfile
+echo '        <key>CFBundleIconFile</key>' >>$plistfile
+echo '        <string>'$appname'.png</string>' >>$plistfile
+echo '        <key>CFBundleIdentifier</key>' >>$plistfile
+echo '        <string>com.caseydelorme.'$appname'</string>' >>$plistfile
+echo '        <key>CFBundleInfoDictionaryVersion</key>' >>$plistfile
+echo '        <string>6.0</string>' >>$plistfile
+echo '        <key>CFBundlePackageType</key>' >>$plistfile
+echo '        <string>APPL</string>' >>$plistfile
+echo '        <key>CFBundleSignature</key>' >>$plistfile
+echo '        <string>'$PkgInfoContents'</string>' >>$plistfile
+echo '        <key>CFBundleVersion</key>' >>$plistfile
+echo '        <string>1.0</string>' >>$plistfile
+echo '    </dict>' >>$plistfile
 echo '</plist>' >>$plistfile
