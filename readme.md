@@ -14,43 +14,12 @@ I also have my own list of interests to invest some time into.
 
 ## tasklist
 
-- Implement avg FPS counter
-    - add debug hotkey to print fps to screen (can expand on this later)
-        - Compare FPS between Air and Retina
-
-- Get a proper game loop running
-    - implement optional fps restriction to 60 and 30 fps
-        - test/verify with fps counter
-    - test time-to low-battery% with unlimited, 60, and 30 fps
-        - air & retina would be nice
-
-- Figure out the best approach for handling collision detection
-    - Also whether we should do one type, or make it dependent on the objects
-
-- Restrict player movement to inside the view
-
-- Identify a means of restricting view scrolling to the BG
-
----
-
-- Three editors:
-    - tile editor
-    - map editor
-    - entity editor
-        - bullets
-        - player
-        - enemies
-
-_the tile editor may in fact be an entity editor in disguise._
-
----
-
-- Research AI for enemies, and how to vary difficulty
-
----
-
-- C++ Dirwalk /w sha256 hash generation for "simple" file deduplication
-    - Group by size, then perform hashing in sets by size where items > 1?
+- game
+- editors
+- ai
+- deduplication
+    - dirwalk /w sha256 hash generation for simple file deduplication
+        - group by size, then perform hash comparisons where groups have > 1 files
 
 
 ## references
