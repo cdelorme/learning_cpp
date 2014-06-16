@@ -45,3 +45,13 @@ As the class grows and the intentions become more transparent I hope to be able 
 - Identify a means of restricting view scrolling to the BG
 
 
+## entities, tiles, & maps
+
+I am still trying to understand how to treat these three.
+
+Maps may be fairly strait forward, but I am at a loss for Tiles and Entities, including Player.  Do we need a "Player" class, or can we just create Entities for both players and tiles?
+
+I believe that might end up being the best way to go, but it leads to a great deal of ambiguity.  However, tile interaction may as well lead to maps being comprised entirely of entities.
+
+Controlling rendering order becomes a concern then as well, so I'll need some means of layering for that.
+
