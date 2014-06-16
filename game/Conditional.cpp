@@ -19,12 +19,8 @@
 // local
 #include "Conditional.h"
 
-
-// constructor
-Conditional::Conditional() {}
-
 // Assure our directory is relative to data so we can access it (primarily OSX)
-Conditional::paths() {
+void Conditional::paths() {
 
 // ----------------------------------------------------------------------------
 // This makes relative paths work in C++ in Xcode by changing directory to the Resources folder inside the .app bundle
