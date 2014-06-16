@@ -1,0 +1,61 @@
+#!/bin/bash
+# Compiler script to simplify all of the g++ command logic
+# it is not meant as an abstraction so much as a tool to expedite compiling
+# I greatly value knowing what is running through my compiler
+# also this does not support recursive builds with files in multiple folders
+# nor is it ideal for performant scripts (compiler flag is default to debug)
+
+# grab the supplied core file
+FILE=${1%%.*}
+if [ -z "$FILE" ]
+then
+    echo "Please supply us a primary file to use in our build attempt..."
+    exit 1
+fi
+
+# delete former executable if it exists
+if [ -x "$FILE" ]
+then
+    rm -rf "$FILE"
+fi
+
+# define some compilation settings
+CC="g++"
+OPTFLAGS="-Og"
+BUILDFLAGS="-std=c++11"
+COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio"
+
+# Apple Conditional Flags
+if [ $(uname) = "Darwin" ]
+then
+    COMPILEFLAGS="$COMPILEFLAGS -framework CoreFoundation"
+fi
+
+# compile all .cpp files in the same path as $FILE
+BUILDDIR=$(dirname "$FILE")
+for FILENAME in "$BUILDDIR"/*.cpp
+do
+    $CC $BUILDFLAGS $OPTFLAGS -c "$FILENAME"
+done
+
+# build our executable with all the built .o files
+$CC $COMPILEFLAGS $OPTFLAGS -o "${FILE%%.*}" "$BUILDDIR"/*.o
+
+# cleanup .o files
+for DFILE in "$BUILDDIR"/*.o
+do
+    rm -rf DFILE
+done
+
+# if we are in osx we can also build/symlink a custom app!
+if [ $(uname) = "Darwin" ]
+then
+    echo ""
+fi
+
+# if we have an executable we execute it
+if [ -x "$FILE" ]
+then
+    ./$FILE
+fi
+
