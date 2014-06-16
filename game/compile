@@ -32,7 +32,7 @@ then
 fi
 
 # compile all .cpp files in the same path as $FILE
-BUILDDIR=$(dirname "$FILE")
+BUILDDIR=$(dirname "${FILE}.cpp")
 for FILENAME in "$BUILDDIR"/*.cpp
 do
     $CC $BUILDFLAGS $OPTFLAGS -c "$FILENAME"
@@ -44,7 +44,7 @@ $CC $COMPILEFLAGS $OPTFLAGS -o "${FILE%%.*}" "$BUILDDIR"/*.o
 # cleanup .o files
 for DFILE in "$BUILDDIR"/*.o
 do
-    rm -rf DFILE
+    rm -rf $DFILE
 done
 
 # if we are in osx we can also build/symlink a custom app!
