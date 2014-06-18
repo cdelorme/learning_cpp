@@ -14,8 +14,9 @@ class Game {
          * temporarily property of the Game class
          */
         const float gravity = 1.0f;
-        float moveSpeed;
+        float movementSpeed;
         float jumpSpeed;
+        float groundHeight;
 
         // eventually the window will be part of a display abstraction
         sf::RenderWindow window;

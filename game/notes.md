@@ -33,8 +33,16 @@ Controlling rendering order becomes a concern then as well, so I'll need some me
 
 ## issues
 
-- create a more complete game abstraction with separated classes
-    - continue to break out all the code as I go along, it'll fall into place if I keep my wits
+- Get a proper game loop running
+    - implement optional fps restriction to 60 and 30 fps
+        - test/verify with fps counter
+    - test time-to low-battery% with unlimited, 60, and 30 fps
+        - air & retina would be nice
+
+- Looking into the best file interaction
+    - binary files, global defaults?
+    - What about per-game settings?
+    - Do we have a single generic config class, or multiple (ex. GameConfig, SaveConfig, InputConfig)
 
 - Implement avg FPS counter
     - add debug hotkey to print fps to screen (can expand on this later)
@@ -42,12 +50,6 @@ Controlling rendering order becomes a concern then as well, so I'll need some me
 
 - Test window scaling, it would be nice if when the window was resized that the content was still within the bounds with scaling
     - since ratio might matter I'd rather we use a view to maintain ratio and create empty borders
-
-- Get a proper game loop running
-    - implement optional fps restriction to 60 and 30 fps
-        - test/verify with fps counter
-    - test time-to low-battery% with unlimited, 60, and 30 fps
-        - air & retina would be nice
 
 - Figure out the best approach for handling collision detection
     - Also whether we should do one type, or make it dependent on the objects

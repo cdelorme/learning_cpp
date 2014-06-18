@@ -1,33 +1,120 @@
-
-// #include "Player.h"
-
-// Player::Player(sf::Vector2f position, sf::Vector2f size, sf::Color color) : velocity(sf::Vector2f(0, 0)) {
-//     this->rect.setPosition(position);
-//     this->rect.setSize(size);
-//     this->rect.setFillColor(color);
-// };
-
-// Player::update() {
-//     this->bottom = rect.getPosition().y + rect.getSize().y;
-//     this->left = rect.getPosition().x;
-//     this->right = rect.getPosition().x + rect.getSize().x;
-//     this->top = rect.getPosition().y;
+/**
+ * Player.cpp
+ *
+ * author: Casey DeLorme <cdelorme@gmail.com>
+ * date: 2014-6-17
+ *
+ * description:
+ *  Player instance, describes a player entity (subject to change)
+ *
+ */
 
 
-//     // these calculations do not belong here, but for now it'll do
+// external includes
+#include <SFML/Graphics.hpp>
 
-//     // calculate corners to identify active-tiles
-//     this->topLeft = sf::Vector2i((int)this->left / 32, (int)this->top / 32);
-//     this->topRight = sf::Vector2i((int)this->right / 32, (int)this->top / 32);
-//     this->bottomLeft = sf::Vector2i((int)this->left / 32, (int)this->bottom / 32);
-//     this->bottomRight = sf::Vector2i((int)this->right / 32, (int)this->bottom / 32);
+// debug includes (removed later)
+#include <iostream>
 
-//     // clear tile set
-//     this->tiles.clear();
 
-//     // push overlapping tiles into array
-//     this->tiles.push_back(topLeft);
-//     if (std::find(this->tiles.begin(), this->tiles.end(), this->topRight) == this->tiles.end()) this->tiles.push_back(this->topRight);
-//     if (std::find(this->tiles.begin(), this->tiles.end(), this->bottomLeft) == this->tiles.end()) this->tiles.push_back(this->bottomLeft);
-//     if (std::find(this->tiles.begin(), this->tiles.end(), this->bottomRight) == this->tiles.end()) this->tiles.push_back(this->bottomRight);
-// }
+// internal
+#include "Player.h"
+
+
+// set defaults
+Player::Player() {
+
+    // debug output
+    std::cout << "player loaded" << std::endl;
+
+    this->bottom = 0;
+    this->left = 0;
+    this->right = 0;
+    this->top = 0;
+    this->jumpHeight = 100;
+    this->velocity = sf::Vector2f(0, 0);
+    this->sprite.setPosition(sf::Vector2f(0, 0));
+    this->sprite.setSize(sf::Vector2f(10, 10));
+    this->sprite.setFillColor(sf::Color::Magenta);
+};
+
+void Player::update() {
+    /**
+     * Physics engine correction or pre-emption?
+     * Do I assume movement and then fix it in physics?
+     * Or do I supply a movement request to physics
+     * and pre-emptively determine if it can be allowed?
+     */
+
+    // move character
+    this->sprite.move(this->velocity.x, this->velocity.y);
+
+    // calculate new positional data
+    this->bottom = sprite.getPosition().y + sprite.getSize().y;
+    this->left = sprite.getPosition().x;
+    this->right = sprite.getPosition().x + sprite.getSize().x;
+    this->top = sprite.getPosition().y;
+}
+
+void Player::setVelocity(float x, float y) {
+    this->velocity.x = x;
+    this->velocity.y = y;
+}
+void Player::setVelocity(sf::Vector2f velocity) {
+    this->velocity = velocity;
+}
+sf::Vector2f Player::getVelocity() {
+    return this->velocity;
+}
+void Player::changeVelocity(float x, float y) {
+    this->velocity.x += x;
+    this->velocity.y += y;
+}
+void Player::setJumpHeight(float jumpHeight) {
+    this->jumpHeight = jumpHeight;
+}
+float Player::getJumpHeight() {
+    return this->jumpHeight;
+}
+
+// abstractions
+sf::Vector2f Player::getPosition() {
+    return this->sprite.getPosition();
+}
+sf::Vector2f Player::getSize() {
+    return this->sprite.getSize();
+}
+void Player::setPosition(float x, float y) {
+    this->sprite.setPosition(sf::Vector2f(x, y));
+}
+void Player::setPosition(sf::Vector2f position) {
+    this->sprite.setPosition(position);
+}
+
+
+// subject to change when sprite becomes a sf::Sprite
+sf::RectangleShape Player::getSprite() {
+    return this->sprite;
+}
+
+Player::Player(sf::Vector2f position, sf::Vector2f size, sf::Color color) {
+
+    // debug output
+    std::cout << "player loaded" << std::endl;
+
+    this->bottom = 0;
+    this->left = 0;
+    this->right = 0;
+    this->top = 0;
+    this->jumpHeight = 100;
+    this->velocity = sf::Vector2f(0, 0);
+    this->sprite.setPosition(position);
+    this->sprite.setFillColor(color);
+    this->sprite.setSize(size);
+}
+
+sf::RectangleShape Player::render() {
+    // perform any extra pre-render calculations here
+
+    return this->sprite;
+}

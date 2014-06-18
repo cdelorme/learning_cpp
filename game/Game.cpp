@@ -20,20 +20,20 @@
 
 // local includes
 #include "Game.h"
-
+#include "Player.h"
 
 // ideally we should define defaults for physics
 // we probably want to use intelligent display size checks & color-compatibility for window settings
 
 
 // constructor /w defaults for physics (to be abstracted later)
-Game::Game() :  moveSpeed(1.0f), jumpSpeed(10.0f) {}
+Game::Game() :  movementSpeed(0.4f), jumpSpeed(1.3f), groundHeight(400) {}
 
 // this kicks of the main game
 void Game::start(std::string title) {
 
      // test output
-    std::cout << "Game Loaded" << std::endl;
+    std::cout << "game loaded" << std::endl;
 
     /**
      * load config file data & run detection for default settings:
@@ -50,7 +50,13 @@ void Game::start(std::string title) {
     this->window.create(sf::VideoMode(800, 640, 32), title);
     this->window.clear();
 
+    // create player instance
+    Player player(sf::Vector2f(0, 0), sf::Vector2f(20, 20), sf::Color::Red);
+
     while (this->window.isOpen()) {
+
+        // clear the drawing area
+        this->window.clear();
 
         // use event object on non-time-sensative interaction
         sf::Event event;
@@ -62,60 +68,52 @@ void Game::start(std::string title) {
             }
         }
 
+        /**
+         * Input captured for player velocity controls
+         * which needs to be abstracted into an Input
+         * class somehow...
+         */
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            player.setVelocity(this->movementSpeed, 0);
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            player.setVelocity(-this->movementSpeed, 0);
+        } else {
+            player.setVelocity(0, player.getVelocity().y);
+        }
 
+        /**
+         * Jump height limit is applied, but we now also need a variable
+         * to set when up is not pressed AND they are currently jumping
+         * otherwise we basically allow flight with a height restriction
+         */
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && this->groundHeight - player.getPosition().y < player.getJumpHeight()) {
+            player.setVelocity(0, -this->jumpSpeed);
+        }
 
+        /**
+         * apply gravity, noting that movement is run after, which leans towards physics and pre-emptive detection
+         * also we should probably implement a max-velocity to prevent infinite speed gravity
+         */
+        if (player.getPosition().y + player.getSize().y < this->groundHeight || player.getVelocity().y < 0) {
+            player.changeVelocity(0, this->gravity);
+        } else if (player.getPosition().y > this->groundHeight || player.getVelocity().y > 0) {
+            player.setPosition(player.getPosition().x, this->groundHeight - player.getSize().y);
+            player.setVelocity(player.getVelocity().x, 0);
+        }
+
+        // update player movement data
+        player.update();
+
+        /**
+         * draw entities & display changes
+         * later we will offload this to a render/display class
+         */
+        // this->window.draw(background);
+        this->window.draw(player.render());
+        this->window.display();
     }
 
-    // while (window.isOpen()) {
-
-    //     // control velocity
-    //     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-    //         one.velocity.x = moveSpeed;
-    //     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-    //         one.velocity.x = -moveSpeed;
-    //     } else {
-    //         one.velocity.x = 0;
-    //     }
-    //     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-    //         one.velocity.y = -jumpSpeed;
-    //     }
-
-    //     // if we are floating, we want gravity
-    //     if (one.rect.getPosition().y + one.rect.getSize().y < groundHeight || one.velocity.y < 0) {
-    //         one.velocity.y += gravity;
-    //     } else {
-    //         // reset to the ground to prevent problems
-    //         one.rect.setPosition(one.rect.getPosition().x, groundHeight - one.rect.getSize().y);
-    //         one.velocity.y = 0;
-    //     }
-
-    //     // move based on velocity
-    //     one.rect.move(one.velocity.x, one.velocity.y);
-
-    //     // update player
-    //     one.update();
-
-    //     // let's check for collisions
-    //     for (int i = 0; i < one.tiles.size(); i++) {
-    //         int position = (one.tiles[i].x * mapSize.y) + one.tiles[i].y;
-    //         if (position >= 0 && position < tiles.size() && tiles[position].getFillColor() == solid) {
-    //             one.rect.setFillColor(sf::Color::Magenta);
-    //             break;
-    //         } else {
-    //             one.rect.setFillColor(sf::Color::Red);
-    //         }
-    //     }
-
-    //     // draw tiles with c++11 iterator
-    //     for (auto i = tiles.begin(); i != tiles.end(); i++) {
-    //         window.draw(*i);
-    //     }
-
-    //     // realistic falling accelerates, it does not stay static
-    //     window.draw(one.rect);
-
-    //     // draw bg
-    //     window.display();
-    // }
+    // debug output
+    std::cout << "game ended" << std::endl;
 
 }
