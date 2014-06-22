@@ -17,6 +17,9 @@ class Game {
         float movementSpeed;
         float jumpSpeed;
         float groundHeight;
+        float timeStep;
+        float lag;
+        int maxUpdatesPerTimeStep;
 
         // eventually the window will be part of a display abstraction
         sf::RenderWindow window;

@@ -27,7 +27,7 @@
 
 
 // constructor /w defaults for physics (to be abstracted later)
-Game::Game() :  movementSpeed(0.4f), jumpSpeed(1.3f), groundHeight(400) {}
+Game::Game() :  movementSpeed(0.4f), jumpSpeed(1.3f), groundHeight(400), timeStep(16.6f), lag(0), maxUpdatesPerTimeStep(3) {}
 
 // this kicks of the main game
 void Game::start(std::string title) {
@@ -68,41 +68,50 @@ void Game::start(std::string title) {
             }
         }
 
-        /**
-         * Input captured for player velocity controls
-         * which needs to be abstracted into an Input
-         * class somehow...
-         */
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            player.setVelocity(this->movementSpeed, 0);
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            player.setVelocity(-this->movementSpeed, 0);
-        } else {
-            player.setVelocity(0, player.getVelocity().y);
-        }
+        // grab elapsed time from our game clock
+        this->lag += this->clock.restart()
 
-        /**
-         * Jump height limit is applied, but we now also need a variable
-         * to set when up is not pressed AND they are currently jumping
-         * otherwise we basically allow flight with a height restriction
-         */
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && this->groundHeight - player.getPosition().y < player.getJumpHeight()) {
-            player.setVelocity(0, -this->jumpSpeed);
-        }
+        while (this->lag > this->timeStep) {
 
-        /**
-         * apply gravity, noting that movement is run after, which leans towards physics and pre-emptive detection
-         * also we should probably implement a max-velocity to prevent infinite speed gravity
-         */
-        if (player.getPosition().y + player.getSize().y < this->groundHeight || player.getVelocity().y < 0) {
-            player.changeVelocity(0, this->gravity);
-        } else if (player.getPosition().y > this->groundHeight || player.getVelocity().y > 0) {
-            player.setPosition(player.getPosition().x, this->groundHeight - player.getSize().y);
-            player.setVelocity(player.getVelocity().x, 0);
-        }
+            /**
+             * Input captured for player velocity controls
+             * which needs to be abstracted into an Input
+             * class somehow...
+             */
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+                player.setVelocity(this->movementSpeed, 0);
+            } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+                player.setVelocity(-this->movementSpeed, 0);
+            } else {
+                player.setVelocity(0, player.getVelocity().y);
+            }
 
-        // update player movement data
-        player.update();
+            /**
+             * Jump height limit is applied, but we now also need a variable
+             * to set when up is not pressed AND they are currently jumping
+             * otherwise we basically allow flight with a height restriction
+             */
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && this->groundHeight - player.getPosition().y < player.getJumpHeight()) {
+                player.setVelocity(0, -this->jumpSpeed);
+            }
+
+            /**
+             * apply gravity, noting that movement is run after, which leans towards physics and pre-emptive detection
+             * also we should probably implement a max-velocity to prevent infinite speed gravity
+             */
+            if (player.getPosition().y + player.getSize().y < this->groundHeight || player.getVelocity().y < 0) {
+                player.changeVelocity(0, this->gravity);
+            } else if (player.getPosition().y > this->groundHeight || player.getVelocity().y > 0) {
+                player.setPosition(player.getPosition().x, this->groundHeight - player.getSize().y);
+                player.setVelocity(player.getVelocity().x, 0);
+            }
+
+            // update player movement data
+            player.update();
+
+            // update lag
+
+        }
 
         /**
          * draw entities & display changes
