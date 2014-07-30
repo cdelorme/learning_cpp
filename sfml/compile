@@ -2,7 +2,7 @@
 
 FILE=${1%%.*}
 CC="g++"
-OPTFLAGS="-Og"
+#OPTFLAGS="-Og"
 BUILDFLAGS="-std=c++11"
 COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio"
 # Temporarily disabled until I can figure out static linking
