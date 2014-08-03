@@ -21,9 +21,12 @@ fi
 
 # define some compilation settings
 CC="g++"
-OPTFLAGS="-Og"
+if [ $(uname -r) = "Darwin" ]
+then
+    OPTFLAGS="-Og"
+fi
 BUILDFLAGS="-std=c++11"
-COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio"
+COMPILEFLAGS="-g -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio"
 
 # Apple Conditional Flags
 if [ $(uname) = "Darwin" ]
@@ -47,15 +50,15 @@ do
     rm -rf $DFILE
 done
 
-# if we are in osx we can also build/symlink a custom app!
-if [ $(uname) = "Darwin" ]
-then
-    echo ""
-fi
-
-# if we have an executable we execute it
 if [ -x "$FILE" ]
 then
+
+    # if we are in osx we can also build/symlink a custom app!
+    if [ $(uname) = "Darwin" ]
+    then
+        ./osxbundle.sh game debug
+    fi
+
+    # if we have an executable we execute it
     ./$FILE
 fi
-
