@@ -3,13 +3,11 @@
 
 For learning!
 
-
 The only networking portion I am interested in is UDP, specifically shooting messages at my server.
 
-Ideally this would be for logging, I don't intend to send data the reverse direction, and so I'm not worried about failure.  What I get is good.
+Ideally this would be for logging, I don't intend to send data the reverse direction, and so I'm not worried about failure.  Whatever I can get is good.
 
 So we can do something like this:
-
 
     bool userConsent = true;// give them a checkbox from the UI (eventually)
 
