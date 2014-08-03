@@ -7,7 +7,7 @@ then
     OPTFLAGS="-Og"
 fi
 BUILDFLAGS="-std=c++11"
-COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio"
+COMPILEFLAGS="-g -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio"
 # Temporarily disabled until I can figure out static linking
 #BUILDFLAGS="-std=c++11 -I../SFML-2.1/include"
 #COMPILEFLAGS="-lsfml-graphics -lsfml-window -lsfml-system"
