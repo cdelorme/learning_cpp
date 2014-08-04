@@ -7,6 +7,15 @@ The objective is to test and compare rendering a tilemap from sprites ontop of t
 
 In future iterations I would like to experiment with loading images significantly larger than the maximum texture size limit, and breaking it into smaller chunks that can be handled by any graphics card.  However, this may not be necessary if designing towards modern cards, of which even mobile devices seem to have a maximum of 512x512 as-is.  Also, the concept that textures are applied to 3D space is still a bit of a mystery for me, so that'll be worth testing out sometime too.
 
+## raw fps test
+
+- open a window
+- conditionally calculate fps
+- render fps
+- display & clear
+
+_This adds the bar for us to run our tests against, by defining what the absolute fastest render speed can be when no actual rendering work is done (beyond fps), in contrast to simply comparing a higher and lower number from the next two._
+
 
 ## sprites test
 
@@ -27,6 +36,13 @@ In future iterations I would like to experiment with loading images significantl
 - run the render loop to draw the vertex-array of quads
 - conditionally update fps once per second
 - draw fps
+
+
+# results
+
+The raw fps was approx. 500.  Both "real" test cases held over 350 frames per second.  To my surprise the sprites were actually significantly faster than the quads (on average more than 50 fps faster).  To explain this I noticed less than 5% CPU while running the quads test, and over 20% CPU while running the sprites.  In both cases system memory used was negligable (though my test system has 32GB so there could still be a significant difference).
+
+_I will update these results after testing the code on my laptop and then on a system with a discrete graphics card._
 
 
 ## questions I asked myself
