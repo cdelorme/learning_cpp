@@ -40,9 +40,11 @@ _This adds the bar for us to run our tests against, by defining what the absolut
 
 # results
 
-The raw fps was approx. 500.  Both "real" test cases held over 350 frames per second.  To my surprise the sprites were actually significantly faster than the quads (on average more than 50 fps faster).  To explain this I noticed less than 5% CPU while running the quads test, and over 20% CPU while running the sprites.  In both cases system memory used was negligable (though my test system has 32GB so there could still be a significant difference).
+Running on the Core i7 3770's integrated Intel HD 4000, the raw fps was approx. 500.  Both "real" test cases held over 350 frames per second.  To my surprise the sprites were actually significantly faster than the quads (on average more than 50 fps faster).  To explain this I noticed less than 5% CPU while running the quads test, and over 20% CPU while running the sprites.  In both cases system memory used was negligable (though my test system has 32GB so there could still be a significant difference).
 
-_I will update these results after testing the code on my laptop and then on a system with a discrete graphics card._
+Running on a Macbook Air's Dual-Core i7 with integrated HD 5000 the raw FPS averaged 1500~, with the sprite test yielding 600~ fps and the quads at over 1000 fps.  This contradicts the results of the HD 4000, indicating that the more powerful the graphics card the better it performs with quads.  Further the CPU on the dual-core i7 was at 40% while running the sprites test and 30% while running quads, which yields yet another reason to use quads.  The memory consumption between the two only differed by 1 Megabyte, with numbers of 10MB and 9MB respectively.
+
+**In conclusion, quads are the superior choice for CPU consumption as well as FPS on powerful integrated or discrete graphics cards.**
 
 
 ## questions I asked myself
