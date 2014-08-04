@@ -193,3 +193,18 @@ Two ways to deal with fast moving objects are "Swept Collision" and "Multi-Sampl
 The use of "Early-Out" techniques is smart, because it reduces the necessary calculations.  I suspect complex structures to have multiple bounding boxes, and therefore
 
 **Phsyics handling ontop of this will require significantly more reading.**
+
+
+
+## simpler menus
+
+I was watching the "Made Easy" videos and the fourth video of the MenuManager portion of the SFML Platformer tutorial was a great indicator that a menu does not have to be complex.
+
+Literally a black screen with text rendered to match the menu is all that is necessary.
+
+Even more versatile if the menu text is loaded from a file (because it can then be swapped out per language).
+
+A means of determining the index both in code, and visually by changing opacity at runtime (eg. focus/blur effect back and forth or vivid to dim back and fourth).  The final step of each menu would be tied to specific events or actions.
+
+The only tough part here might be loading save data, but that's only a bit more complex than loading a text-file for menu items.
+
